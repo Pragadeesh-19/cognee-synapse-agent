@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.idea/
+.vscode/
+results/*
+!results/.gitkeep
+.cognee_system/
+cognee_db/
