@@ -204,8 +204,9 @@ demo were built **from scratch during the hackathon week** (June 29 - July 6 202
 ---
 
 ## Links
-
+```
 - Cognee: https://github.com/topoteretes/cognee
 - Synapse-DB: https://github.com/Pragadeesh-19/synapse-db
 - This project: https://github.com/Pragadeesh-19/cognee-synapse-agent
 ```
+
