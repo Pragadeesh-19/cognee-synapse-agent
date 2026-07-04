@@ -91,7 +91,7 @@ episodes pruned so they stop polluting recall.
 
 **1. Clone**
 ```bash
-git clone https://github.com/Pragadeesh-19/cognee-synapse-agent cognee-synapse-agent
+git clone https://github.com/Pragadeesh-19/cognee-synapse-agent
 cd cognee-synapse-agent
 ```
 
@@ -102,10 +102,42 @@ uv pip install -e ".[dev]"
 
 **3. Start Synapse-DB** (procedural memory engine, runs in Docker)
 ```bash
-# Synapse-DB listens on localhost:8080 with X-Api-Key: sk_syn_hackathon2026
-docker start synapse-db   # or your compose command
+git clone https://github.com/Pragadeesh-19/synapse-db.git
+cd synapse-db
+
+# Fix the Dockerfile: change line 3 from eclipse-temurin:21-jdk-jammy
+# to maven:3.9-eclipse-temurin-21 (Maven is not included in the base image)
+
+docker build -t synapse-db:latest .
+
+# Generate SHA-256 hash of the API key
+# Linux/macOS:
+printf '%s' 'sk_syn_hackathon2026' | sha256sum
+# Windows PowerShell:
+$bytes = [System.Text.Encoding]::UTF8.GetBytes("sk_syn_hackathon2026")
+$hash = [System.Security.Cryptography.SHA256]::Create().ComputeHash($bytes)
+($hash | ForEach-Object { $_.ToString("x2") }) -join ""
+
+# Create config with the hash from above
+mkdir config data
+cp config/api-keys.yml.sample config/api-keys.yml
+# Edit config/api-keys.yml: replace the 64-zero keyHash with the hash above
+
+# Run with volumes
+docker run -d --name synapse-db -p 8080:8080 \
+  -v $(pwd)/data:/data \
+  -v $(pwd)/config:/config \
+  synapse-db:latest
+
+# Windows PowerShell: replace $(pwd) with ${PWD}
+
+cd ..
+
+# Verify (wait 20 seconds for JVM startup)
 curl -H "X-Api-Key: sk_syn_hackathon2026" http://localhost:8080/api/v1/agents/0/memory/stats
 ```
+
+---
 
 **4. Configure** — copy your keys into `.env` (Anthropic key required):
 ```
@@ -225,9 +257,13 @@ demo were built **from scratch during the hackathon week** (June 29 - July 6 202
 ---
 
 ## Links
-```
+
 - Cognee: https://github.com/topoteretes/cognee
 - Synapse-DB: https://github.com/Pragadeesh-19/synapse-db
 - This project: https://github.com/Pragadeesh-19/cognee-synapse-agent
-```
+
+---
+
+## AI tools Declaration
+Claude code (Anthropic) was used throughout development for code generation, debugging, and engineering review. All architectural decisions, phase planning, prompt design, and result validation were done by me. 
 
