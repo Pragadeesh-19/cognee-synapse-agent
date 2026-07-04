@@ -1,0 +1,108 @@
+{
+  "config": {
+    "epochs": 8,
+    "train_questions": 50,
+    "holdout_questions": 10,
+    "budget_ceiling_gbp": 4.5,
+    "note": "Completed 8/10 epochs. Crashed epoch 9 Q07 on APIConnectionError (transient network drop). Epochs 9-10 not completed. 6-epoch plateau at 58% makes conclusion clear."
+  },
+  "vanilla_train_accuracy": 0.26,
+  "vanilla_train_correct": 13,
+  "per_epoch": [
+    {
+      "epoch": 1,
+      "memory_train_accuracy": 0.5,
+      "memory_train_correct": 25,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 2,
+      "memory_train_accuracy": 0.56,
+      "memory_train_correct": 28,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 3,
+      "memory_train_accuracy": 0.58,
+      "memory_train_correct": 29,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 4,
+      "memory_train_accuracy": 0.58,
+      "memory_train_correct": 29,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 5,
+      "memory_train_accuracy": 0.58,
+      "memory_train_correct": 29,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 6,
+      "memory_train_accuracy": 0.58,
+      "memory_train_correct": 29,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 7,
+      "memory_train_accuracy": 0.58,
+      "memory_train_correct": 29,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    },
+    {
+      "epoch": 8,
+      "memory_train_accuracy": 0.58,
+      "memory_train_correct": 29,
+      "memory_train_total": 50,
+      "memory_holdout_accuracy": 0.6,
+      "memory_holdout_correct": 6,
+      "memory_holdout_total": 10,
+      "hashes_stored_this_epoch": 11,
+      "forget_events": []
+    }
+  ],
+  "forget_events": [],
+  "cost": {
+    "sql_calls": 530,
+    "cognify_calls": 88,
+    "improve_calls": 8,
+    "estimated_gbp": 0.465
+  }
+}

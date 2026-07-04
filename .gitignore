@@ -6,5 +6,7 @@ __pycache__/
 .vscode/
 results/*
 !results/.gitkeep
+!results/learning_curve.png
+!results/benchmark_20260703T011847Z.json
 .cognee_system/
 cognee_db/

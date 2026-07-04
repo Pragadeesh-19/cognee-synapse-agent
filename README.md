@@ -31,6 +31,12 @@ Numbers are from a real run of 8 epochs on 50 training + 10 hold-out questions,
 model `claude-haiku-4-5`, total API cost **£0.465**. Nothing here is estimated or
 fabricated. See [Honest caveats](#honest-caveats) for what did *not* hit target.
 
+![Learning curve: memory agent vs vanilla baseline across epochs](results/learning_curve.png)
+
+The learning curve above and the raw per-epoch numbers
+(`results/benchmark_20260703T011847Z.json`) are committed to this repo — you can
+read the evidence without re-running the benchmark.
+
 ---
 
 ## Architecture
@@ -118,19 +124,24 @@ uv run python benchmarks/runner.py --epochs 10   # full benchmark (~£0.5, ~hour
 
 ---
 
-## Single-shot benchmark vs multi-step demo
+## How to read the benchmark and the demo
 
-This distinction is deliberate and matters for reading the results.
-
-- **The benchmark is single-shot.** One LLM call per question. 500 training calls
-  plus 500 vanilla calls fit inside a ~£5 budget. Synapse still receives one
+- **The benchmark is single-shot.** One LLM call per question — no multi-step
+  reasoning chain — which keeps 8 epochs over 60 questions well inside budget
+  (£0.465 actual). The memory agent reruns every epoch so episodes accumulate;
+  the **vanilla baseline runs once** (50 calls), because with zero memory context
+  at temperature 0 its answers are deterministic and identical across epochs, so
+  re-running it per epoch would only burn budget. Synapse still receives one
   thought per question, the state hash groups question types, and reinforcement
-  tracks which SQL approach works per type across hundreds of attempts. Procedural
-  memory is real and meaningful here.
+  tracks which approach works per type across attempts.
 
-- **`demo.py` is multi-step.** It makes the reasoning chain visible for judges,
-  writing each reasoning step to Synapse one at a time. This is a presentation
-  device, not the benchmark.
+- **`demo.py` is a two-part live demo, not the benchmark.** PART 1 answers the 50
+  training questions twice — once with memory, once vanilla — to show the gap in
+  real time. PART 2 is the falsifiable proof: a recall-signal ablation that runs a
+  broken constant hash (every stored episode matches every question, so recall
+  fires on ~100%) against the real per-type hash (recall stays targeted, ~25%).
+  Break the hash and the per-type effect vanishes — experimental evidence that the
+  state hash, not coincidence, is the mechanism.
 
 ---
 
@@ -171,6 +182,16 @@ spec.
   gain is +8 points, below the +20 target.
 - **Hold-out stayed flat at 60%.** It started high and did not climb, so this run
   does not demonstrate the generalisation lift I hoped for on unseen questions.
+  The 10 hold-out questions skew toward easier types, which is why hold-out sits a
+  little above the 58% training peak rather than below it.
+- **The model is `claude-haiku-4-5`, chosen for cost** (~$0.0006/call against
+  ~$0.005 for Sonnet — the deciding factor on a ~£5 budget). The original spec
+  called for Sonnet; I traded it for Haiku and reconciled the spec to match. Haiku
+  is a weaker base model, so the *absolute* scores are lower than a Sonnet run
+  would show — the vanilla 26% partly reflects the model, not only the absence of
+  memory. The claim is the *same-model* gap: identical model on both sides, memory
+  the only variable. A stronger base would likely lift both lines; whether it
+  widens or narrows the gap is untested here.
 - **Synapse `best-next` does not filter by state hash in this deployment.** It
   returns a global salience signal, so the per-type procedural recall I designed
   for runs through Cognee's hash-keyed episodic memory instead. Synapse still

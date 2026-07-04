@@ -95,6 +95,10 @@ hold-out questions.
 - **Memory agent: 58%.**
 - **Gap: +32 percentage points**, for a total API cost of £0.465.
 
+I used Haiku rather than Sonnet to keep the run inside budget. It is a weaker base
+model, which is why the absolute numbers are modest — but weak or strong, both
+agents ran the *same* model, so the gap is the memory layer and nothing else.
+
 I'm publishing the honest version. The run completed 8 of 10 epochs before a
 network blip killed it. Learning plateaued at 58% from epoch 3 rather than
 climbing to the 70s, because the hardest JOIN questions failed on the first pass

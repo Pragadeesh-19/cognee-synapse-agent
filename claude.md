@@ -8,6 +8,29 @@ its justification. Nothing is left to inference.
 
 ---
 
+## Outcome vs plan (read this first)
+
+This file is the original build spec, preserved as written. The shipped result
+diverged from it in three honest ways. All three are documented in full in
+README.md under "Honest caveats"; where the plan below and the result disagree,
+the README is authoritative.
+
+  1. Model: the run used `claude-haiku-4-5` for cost (~$0.0006/call against
+     ~$0.005 for Sonnet), not the `claude-sonnet-4-6` this spec mandates.
+  2. Accuracy: learning plateaued at 58% from epoch 3, not the 70-75% target.
+     The hardest JOIN questions fail on epoch 1 at temperature 0, so they never
+     seed an episode to recall later, which caps the ceiling. The robust claim is
+     the memory-vs-vanilla gap: 58% vs 26% (+32 points), not the epoch climb.
+  3. Synapse: `best-next` ignores stateHash in the deployed build (unseen hashes
+     return the same salience as written ones). Per-type differentiation therefore
+     runs through Cognee's hash-keyed episodic recall; Synapse provides the global
+     Hebbian reinforce-and-decay signal that drives forget(). demo.py PART 2 is the
+     falsifiable proof that the state hash is the mechanism.
+
+Everything below is the plan as specified before those findings.
+
+---
+
 ## What This Is
 
 The first AI agent runtime with all three human memory types working simultaneously:
