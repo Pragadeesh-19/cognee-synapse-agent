@@ -1,5 +1,9 @@
 # Three-Memory-Type SQL Agent
 
+Memory agent: 58% | Vanilla baseline (same model, zero context): 26% | 
+Gap: +32 points | Total API cost: £0.465 | Model: claude-haiku-4-5 
+(Anthropic's smallest model - chosen to stress-test the memory layer, not the model)
+
 An AI agent runtime that runs all three human memory types at once, proven on a
 text-to-SQL benchmark over the Northwind database.
 
@@ -84,6 +88,17 @@ All four Cognee verbs are used: `remember`, `recall`, `forget`, `improve`.
 `forget` is driven by a real Synapse failure signal at the epoch-5 checkpoint:
 question buckets that failed more than three times have their misleading early
 episodes pruned so they stop polluting recall.
+
+Debugging required parsing Cognee's raw node_content blocks directly - Cognee's 
+graph extraction pipeline normalises stored SQL to snake_case, which the model 
+was learning as real column names. Understanding this at the pipeline level, 
+not just the API level, was what the integration actually required.
+
+A vector database finds the most semantically similar past question and returns 
+that SQL. Synapse tracks which SQL approach works for which question type across 
+hundreds of attempts, with Hebbian reinforcement so successful patterns strengthen 
+and failed ones decay. It learns how to think about a class of problem, not just 
+what worked once for a similar question.
 
 ---
 
@@ -233,6 +248,12 @@ spec.
   is the product. It is not sensitive to the plateau or the crash.
 
 ---
+
+## Technical Excellence
+
+Built across 7 formal engineering phases, each with a defined exit gate and 
+Opus-reviewed plan before implementation. 38 tests across five modules. 
+Three silent failures caught by systematic live inspection before the benchmark ran.
 
 ## Cost
 
