@@ -41,6 +41,16 @@ The learning curve above and the raw per-epoch numbers
 (`results/benchmark_20260703T011847Z.json`) are committed to this repo — you can
 read the evidence without re-running the benchmark.
 
+Haiku is not a coding model. It is Anthropic's smallest, fastest, cheapest model - 
+chosen here purely for cost: £0.465 for the full benchmark run. Sonnet or Opus 
+would have scored higher on both lines. That makes the gap more meaningful, 
+not less. A 32-point improvement on a model with limited SQL capability means 
+the memory layer is doing real work - surfacing schema facts the model didn't 
+know, recalling reasoning approaches it hadn't tried, pruning misleading episodes 
+that were actively hurting it. On a stronger model, the baseline would be higher. 
+The memory lift would still compound on top of it. The mechanism is the result, 
+not the absolute number.
+
 ---
 
 ## Architecture
